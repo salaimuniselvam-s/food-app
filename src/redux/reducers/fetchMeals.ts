@@ -1,41 +1,19 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
-import { API_URL } from "../../utils/constants";
-import axios from "axios";
-import { Meal } from "../../types/inteface";
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  MealsState,
+  allMealsNamespace,
+  fetchAllMeals,
+} from "../actions/fetchAllMealsAction";
 
-const namespace = "allMeals";
-
-interface MealsState {
-  loading: boolean;
-  data: Meal[];
-  errorMessage: string | null;
-}
-
-const initialState: MealsState = {
+export const mealInitialState: MealsState = {
   loading: false,
-  data: [],
+  data: { meals: [] },
   errorMessage: null,
 };
 
-export const fetchAllMeals = createAsyncThunk(
-  `${namespace}/fetchAllMeals`,
-  async (_, thunkApi) => {
-    try {
-      const response = await axios.get(`${API_URL}/search.php?f=s`);
-      return response.data as Meal[];
-    } catch (error) {
-      const axiosError: AxiosError = error as AxiosError;
-      return thunkApi.rejectWithValue({
-        axiosError,
-      });
-    }
-  }
-);
-
-const allMealsSlice = createSlice({
-  name: namespace,
-  initialState,
+const allMeals = createSlice({
+  name: allMealsNamespace,
+  initialState: mealInitialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -44,10 +22,13 @@ const allMealsSlice = createSlice({
         state.errorMessage = null;
       })
       .addCase(fetchAllMeals.fulfilled, (state, action) => {
+        state.data.meals = action.payload.meals
+          .filter((meal) => meal.strMeal.length < 25)
+          .slice(0, 10);
         state.loading = false;
-        state.data = action.payload;
       })
       .addCase(fetchAllMeals.rejected, (state, action) => {
+        state.data.meals = [];
         state.loading = false;
         state.errorMessage =
           action.error.message || "Failed to fetch meals data";
@@ -55,4 +36,4 @@ const allMealsSlice = createSlice({
   },
 });
 
-export default allMealsSlice.reducer;
+export default allMeals.reducer;

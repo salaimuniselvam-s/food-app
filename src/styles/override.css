@@ -1,0 +1,19 @@
+/* antd search */
+.top-10-meals .ant-input-search-button,.top-10-meals .ant-input-clear-icon {
+  display: grid;
+  place-items: center;
+}
+
+.top-10-meals .ant-input-group-addon {
+  background-color: #F76F14;
+}
+
+.top-10-meals .ant-input-search-button:hover, .top-10-meals .ant-input-search-button:active {
+  background-color: #fe6600 !important;
+}
+
+/* ant-button */
+.ant-btn-primary {
+    color: #fff;
+    background-color: #1677ff !important;
+}

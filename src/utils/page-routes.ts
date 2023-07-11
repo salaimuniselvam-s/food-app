@@ -8,10 +8,6 @@ export const pages = [
     path: "/orders",
   },
   {
-    title: "Meals",
-    path: "/meals",
-  },
-  {
     title: "Cart",
     path: "/cart",
   },

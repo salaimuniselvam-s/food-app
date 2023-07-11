@@ -1,7 +1,82 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-floating-promises */
+import { useEffect } from "react";
+import { Input } from "antd";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import Home from "../components/Home";
+import { useAppDispatch, useAppSelector } from "../redux/store/store";
+import MealCard from "../components/MealCard";
+import Loader from "../components/Loader";
+import { fetchAllMeals } from "../redux/actions/fetchAllMealsAction";
+import Button from "../components/Button";
+
+const { Search } = Input;
+
+const AllMeals = ({ refreshFood }: { refreshFood: () => void }) => {
+  const allMeals = useAppSelector((state) => state.allMeals);
+  if (allMeals.loading) return <Loader />;
+  if (allMeals.data.meals.length === 0) {
+    return (
+      <div className="h-300 grid place-content-center">
+        <p className="m-2 font-semibold">Not Available Right Now...!</p>
+        <Button title="Refresh" onClick={refreshFood} />
+      </div>
+    );
+  }
+  return (
+    <>
+      {allMeals.data.meals.map((meal) => {
+        return <MealCard meal={meal} key={meal.idMeal} />;
+      })}
+    </>
+  );
+};
 
 const Homepage = () => {
-  return <div>Homepage</div>;
+  const dispatch = useAppDispatch();
+
+  const onFieldClear = () => {
+    dispatch(fetchAllMeals("s"));
+  };
+
+  useEffect(() => {
+    onFieldClear();
+  }, []);
+
+  const onSearch = (value: string) => {
+    if (!value) return;
+    dispatch(fetchAllMeals(value));
+  };
+
+  return (
+    <main>
+      <Home />
+      <section className="w-full my-6 top-10-meals">
+        <div className="w-full flex sm:flex-row flex-col sm:gap-0 gap-8 items-center justify-between">
+          <p className="text-2xl font-semibold capitalize text-headingColor relative before:absolute before:rounded-lg before:content before:w-24 before:h-1 before:-bottom-2 before:left-0 before:bg-gradient-to-tr from-orange-400 to-orange-600 transition-all ease-in-out duration-100">
+            Top 10 Meals
+          </p>
+
+          <Search
+            placeholder="Search Meal"
+            className="lg:w-460 md:w-350 sm:w-275 w-190 flex justify-center items-center outline-slate-800"
+            onSearch={onSearch}
+            enterButton
+            allowClear={{
+              clearIcon: (
+                <AiOutlineCloseCircle
+                  className="text-lg text-gray-500"
+                  onClick={onFieldClear}
+                />
+              ),
+            }}
+          />
+        </div>
+        <div className="flex flex-wrap justify-center gap-12 my-9">
+          <AllMeals refreshFood={onFieldClear} />
+        </div>
+      </section>
+    </main>
+  );
 };
 
 export default Homepage;

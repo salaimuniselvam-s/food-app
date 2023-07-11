@@ -1,3 +1,18 @@
+export interface addressForm {
+  Address: string;
+  Name: string;
+  city: string;
+  phone: string;
+  prefix: string;
+  state: string;
+}
+
+export interface NavbarBadge {
+  page: { title: string; path: string };
+  navigation: (route: string) => void;
+  className: string;
+}
+
 export interface Meal {
   idMeal: string;
   strMeal: string;
@@ -53,3 +68,11 @@ export interface Meal {
   strCreativeCommonsConfirmed: string | null;
   dateModified: string | null;
 }
+
+export type motionAnimate = {
+  motionAnimate: {
+    initial: { opacity: number; x: number };
+    animate: { opacity: number; x: number };
+    exit: { opacity: number; x: number };
+  };
+};
