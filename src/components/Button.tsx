@@ -1,13 +1,7 @@
 import React from "react";
+import { ButtonPropsCustom } from "../types/inteface";
 
-type ButtonProps = {
-  onClick?: () => void;
-  title: string;
-  restStyles?: string;
-  overRideColor?: string;
-};
-
-const Button: React.FC<ButtonProps> = ({
+const Button: React.FC<ButtonPropsCustom> = ({
   title,
   onClick,
   restStyles,

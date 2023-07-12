@@ -8,12 +8,19 @@ import MealCard from "../components/MealCard";
 import Loader from "../components/Loader";
 import { fetchAllMeals } from "../redux/actions/fetchAllMealsAction";
 import Button from "../components/Button";
+import { AllMealsType } from "../types/inteface";
+import {
+  addItemsToCart,
+  removeItemsFromCart,
+} from "../redux/reducers/cartItems";
 
 const { Search } = Input;
 
 const Homepage = () => {
   const dispatch = useAppDispatch();
   const [searchValue, setSearchValue] = useState("");
+  const cartItems = useAppSelector((state) => state.cartItems.carts);
+  const allMeals = useAppSelector((state) => state.allMeals.data.meals);
 
   const onFieldClear = () => {
     // random meals api is only avaiable to patreon supporters
@@ -30,6 +37,16 @@ const Homepage = () => {
   const onSearch = (value: string) => {
     if (!value) return;
     dispatch(fetchAllMeals(value));
+  };
+
+  const addOrRemoveItemsFromCart = (mealId: string) => {
+    const isCartItem = cartItems.find((item) => item.idMeal === mealId);
+    if (isCartItem) {
+      dispatch(removeItemsFromCart(mealId));
+    } else {
+      const meal = allMeals.find((item) => item.idMeal === mealId);
+      if (meal) dispatch(addItemsToCart(meal));
+    }
   };
 
   return (
@@ -58,8 +75,11 @@ const Homepage = () => {
             }}
           />
         </div>
-        <div className="flex flex-wrap justify-center gap-12 my-9">
-          <AllMeals refreshFood={onFieldClear} />
+        <div className="flex flex-wrap justify-center gap-12 my-9 ">
+          <AllMeals
+            refreshFood={onFieldClear}
+            addOrRemoveItemsFromCart={addOrRemoveItemsFromCart}
+          />
         </div>
       </section>
     </main>
@@ -68,13 +88,16 @@ const Homepage = () => {
 
 export default Homepage;
 
-const AllMeals = ({ refreshFood }: { refreshFood: () => void }) => {
+const AllMeals: React.FC<AllMealsType> = ({
+  refreshFood,
+  addOrRemoveItemsFromCart,
+}) => {
   const allMeals = useAppSelector((state) => state.allMeals);
   if (allMeals.loading) return <Loader />;
   if (allMeals.data.meals.length === 0) {
     return (
       <div className="h-300 grid place-content-center">
-        <p className="m-2 font-semibold">Not Available Right Now...!</p>
+        <p className="p-2 font-semibold">Not Available Right Now...!</p>
         <Button title="Try a Different Meal..!" onClick={refreshFood} />
       </div>
     );
@@ -82,7 +105,13 @@ const AllMeals = ({ refreshFood }: { refreshFood: () => void }) => {
   return (
     <>
       {allMeals.data.meals.map((meal) => {
-        return <MealCard meal={meal} key={meal.idMeal} />;
+        return (
+          <MealCard
+            meal={meal}
+            key={meal.idMeal}
+            addOrRemoveItemsFromCart={addOrRemoveItemsFromCart}
+          />
+        );
       })}
     </>
   );

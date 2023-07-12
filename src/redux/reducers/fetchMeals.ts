@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  MealsState,
   allMealsNamespace,
   fetchAllMeals,
 } from "../actions/fetchAllMealsAction";
+import { MealsState } from "../../types/inteface";
 
 export const mealInitialState: MealsState = {
   loading: false,

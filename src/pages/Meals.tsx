@@ -13,6 +13,7 @@ import {
   removeItemsFromCart,
 } from "../redux/reducers/cartItems";
 import AddressForm from "../components/AddressForm";
+import { filterIngredients } from "../utils/helpers";
 
 const Meals = () => {
   const dispatch = useAppDispatch();
@@ -48,30 +49,79 @@ const Meals = () => {
   };
 
   return (
-    <div>
+    <section>
       {mealById.data.meals.map((meal) => {
         return (
           <div key={meal.idMeal}>
-            <div>{meal.idMeal}</div>
-            <div>{meal.strArea}</div>
-            <div>{meal.strInstructions}</div>
-            <div>{meal.strCategory}</div>
-            <div>{meal.strTags}</div>
-            <div>{meal.strYoutube}</div>
-            <div className="m-6 flex gap-6">
-              <Button
-                title={isInCart ? "Remove from cart" : "Add to cart"}
-                onClick={() => addOrRemoveItemsFromCart(meal)}
-                restStyles="min-w-[190px]"
-              />
-              <Button title="Buy Now" onClick={showModal} />
+            <div className="py-1">
+              <div className="flex w-full flex-col sm:flex-row bg-white shadow-lg rounded-lg h-auto">
+                <div className="w-full sm:w-1/3 flex-grow">
+                  <img
+                    src={meal.strMealThumb}
+                    className="object-cover h-full"
+                  />
+                </div>
+                <div className="w-full sm:w-2/3 flex flex-col relative p-4">
+                  <h1 className="text-gray-900 font-bold text-xl sm:text-2xl">
+                    {meal.strMeal}
+                  </h1>
+                  <h3 className="text-gray-700  mt-2 font-semibold text-lg sm:text-base">
+                    {meal.strCategory} - {meal.strArea}
+                  </h3>
+                  <p className="mt-2 text-gray-600 text-sm">
+                    {meal.strInstructions}
+                  </p>
+                  <div className="mt-2 font-semibold text-lg sm:text-base">
+                    <span className="text-specialPrice">Special Price</span>{" "}
+                    <br />
+                    <span className="text-xl font-bold pr-1">
+                      {"\u20B9"}
+                      {meal.price}
+                    </span>
+                    <span>
+                      <del className="text-gray-500">
+                        {"\u20B9"}
+                        {meal.discountedPrice}
+                      </del>
+                    </span>
+                  </div>
+                  <div>
+                    <h3 className="text-gray-700  mt-2 font-semibold text-lg sm:text-base">
+                      Ingredients
+                    </h3>
+                    <p>
+                      {filterIngredients(meal).map((ingredient, index) => (
+                        <span
+                          key={ingredient + `${index}`}
+                          className="inline-flex items-center mr-2 my-1 px-3 py-2 text-sm font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 capitalize"
+                        >
+                          {ingredient}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                  <div className="mt-3 flex-grow flex flex-col sm:flex-row justify-end items-end gap-3 sm:gap-6">
+                    <Button
+                      title={isInCart ? "Remove from cart" : "Add to cart"}
+                      overRideColor={
+                        isInCart
+                          ? "bg-gradient-to-br from-red-500  to-red-600"
+                          : undefined
+                      }
+                      onClick={() => addOrRemoveItemsFromCart(meal)}
+                      restStyles="min-w-[190px]"
+                    />
+                    <Button title="Buy Now" onClick={showModal} />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         );
       })}
       {/* Add Address & Checkout Modal */}
       <Modal
-        title="ADD A NEW ADDRESS"
+        title="Shipping Address"
         open={isModalOpen}
         footer={null}
         onOk={handleOk}
@@ -80,7 +130,7 @@ const Meals = () => {
       >
         <AddressForm meal={mealById.data.meals} isCart={false} />
       </Modal>
-    </div>
+    </section>
   );
 };
 

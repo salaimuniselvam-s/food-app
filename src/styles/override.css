@@ -20,3 +20,8 @@
 .top-10-meals .ant-input-search-button:active {
   background-color: #fe6600 !important;
 }
+
+/* antd card */
+.ant-card {
+  border: 1px solid #d2c0c0 !important;
+}

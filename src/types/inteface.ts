@@ -13,6 +13,25 @@ export interface NavbarBadge {
   className: string;
   cartCount: number;
   activePath: string;
+  orderCartCount: number;
+}
+
+export interface AddressFormType {
+  meal: Meal[];
+  isCart: boolean;
+}
+
+export type ButtonPropsCustom = {
+  onClick?: () => void;
+  title: string;
+  restStyles?: string;
+  overRideColor?: string;
+};
+
+export interface MealsState {
+  loading: boolean;
+  data: { meals: Meal[] };
+  errorMessage: string | null;
 }
 
 export interface Meal {
@@ -69,6 +88,8 @@ export interface Meal {
   strImageSource: string | null;
   strCreativeCommonsConfirmed: string | null;
   dateModified: string | null;
+  price: number;
+  discountedPrice: number;
 }
 
 export type motionAnimateType = {
@@ -78,3 +99,13 @@ export type motionAnimateType = {
     exit: { opacity: number; x: number };
   };
 };
+
+export interface MealCardType {
+  meal: Meal;
+  addOrRemoveItemsFromCart: (meal: string) => void;
+}
+
+export interface AllMealsType {
+  refreshFood: () => void;
+  addOrRemoveItemsFromCart: (meal: string) => void;
+}

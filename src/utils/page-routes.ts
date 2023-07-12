@@ -4,11 +4,11 @@ export const pages = [
     path: "/",
   },
   {
-    title: "Orders",
-    path: "/orders",
-  },
-  {
     title: "Cart",
     path: "/cart",
+  },
+  {
+    title: "Orders",
+    path: "/orders",
   },
 ];

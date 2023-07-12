@@ -14,6 +14,7 @@ import { motionAnimate } from "../utils/helpers";
 
 const Header = () => {
   const cartItems = useAppSelector((state) => state.cartItems.carts);
+  const orderedItems = useAppSelector((state) => state.orderedItems.orders);
   const location = useLocation();
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed z-50 w-screen max-w-1600 mx-auto p-3 px-4 md:p-6 md:px-16 bg-primary">
+    <header className="fixed z-50 w-screen max-w-1600 mx-auto py-3 px-4 md:py-6 md:px-16 bg-primary">
       {/* desktop & tablet */}
       <div className="hidden md:flex w-full h-full items-center justify-between">
         <AppTitle />
@@ -40,6 +41,7 @@ const Header = () => {
                 page={page}
                 key={page.title}
                 cartCount={cartItems.length}
+                orderCartCount={orderedItems.length}
                 activePath={location.pathname}
                 navigation={navigation}
                 className="text-lg text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer"
@@ -79,6 +81,7 @@ const Header = () => {
                     <NavbarWithBadge
                       page={page}
                       cartCount={cartItems.length}
+                      orderCartCount={orderedItems.length}
                       activePath={location.pathname}
                       key={page.title}
                       navigation={navigation}
@@ -103,6 +106,7 @@ const NavbarWithBadge: React.FC<NavbarBadge> = ({
   className,
   activePath,
   cartCount,
+  orderCartCount,
 }) => {
   const activeNavbar =
     page.path === activePath
@@ -110,9 +114,9 @@ const NavbarWithBadge: React.FC<NavbarBadge> = ({
       : className;
 
   // Adding Cart Items Count as Badge Count
-  if (page.title === "Cart") {
+  if (page.title === "Cart" || page.title === "Orders") {
     return (
-      <Badge count={cartCount}>
+      <Badge count={page.title === "Cart" ? cartCount : orderCartCount}>
         <li
           className={activeNavbar}
           key={page.title}
@@ -135,10 +139,13 @@ const NavbarWithBadge: React.FC<NavbarBadge> = ({
 };
 
 const AppTitle = React.memo(() => {
+  const { width } = useWindowDimension();
   return (
     <Link to={"/"} className="flex items-center gap-2">
       <img src={Logo} className="w-8 object-cover" alt="logo" />
-      <p className="text-headingColor sm:text-xl font-bold">{WEBSITE_NAME}</p>
+      {width > 320 && (
+        <p className="text-headingColor sm:text-xl font-bold">{WEBSITE_NAME}</p>
+      )}
     </Link>
   );
 });

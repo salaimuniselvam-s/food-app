@@ -2,7 +2,7 @@
 import { Button, Form, Input, Select, message } from "antd";
 import React, { useState } from "react";
 import { statesInIndia } from "../utils/constants";
-import { Meal, addressForm } from "../types/inteface";
+import { AddressFormType, addressForm } from "../types/inteface";
 import { useAppDispatch, useAppSelector } from "../redux/store/store";
 import { updateAddress } from "../redux/reducers/getAddress";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +22,7 @@ const formItemLayout = {
   },
 };
 
-const AddressForm: React.FC<{ meal: Meal[]; isCart: boolean }> = ({
-  meal,
-  isCart,
-}) => {
+const AddressForm: React.FC<AddressFormType> = ({ meal, isCart }) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
