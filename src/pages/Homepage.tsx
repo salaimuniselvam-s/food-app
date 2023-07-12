@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "antd";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import Home from "../components/Home";
@@ -11,35 +11,20 @@ import Button from "../components/Button";
 
 const { Search } = Input;
 
-const AllMeals = ({ refreshFood }: { refreshFood: () => void }) => {
-  const allMeals = useAppSelector((state) => state.allMeals);
-  if (allMeals.loading) return <Loader />;
-  if (allMeals.data.meals.length === 0) {
-    return (
-      <div className="h-300 grid place-content-center">
-        <p className="m-2 font-semibold">Not Available Right Now...!</p>
-        <Button title="Refresh" onClick={refreshFood} />
-      </div>
-    );
-  }
-  return (
-    <>
-      {allMeals.data.meals.map((meal) => {
-        return <MealCard meal={meal} key={meal.idMeal} />;
-      })}
-    </>
-  );
-};
-
 const Homepage = () => {
   const dispatch = useAppDispatch();
+  const [searchValue, setSearchValue] = useState("");
 
   const onFieldClear = () => {
+    // random meals api is only avaiable to patreon supporters
+    // so i have chosen to fetch all meals starting "s" from  api..
     dispatch(fetchAllMeals("s"));
+    setSearchValue("");
   };
 
   useEffect(() => {
     onFieldClear();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSearch = (value: string) => {
@@ -59,6 +44,8 @@ const Homepage = () => {
           <Search
             placeholder="Search Meal"
             className="lg:w-460 md:w-350 sm:w-275 w-190 flex justify-center items-center outline-slate-800"
+            value={searchValue}
+            onChange={(event) => setSearchValue(event.target.value)}
             onSearch={onSearch}
             enterButton
             allowClear={{
@@ -80,3 +67,23 @@ const Homepage = () => {
 };
 
 export default Homepage;
+
+const AllMeals = ({ refreshFood }: { refreshFood: () => void }) => {
+  const allMeals = useAppSelector((state) => state.allMeals);
+  if (allMeals.loading) return <Loader />;
+  if (allMeals.data.meals.length === 0) {
+    return (
+      <div className="h-300 grid place-content-center">
+        <p className="m-2 font-semibold">Not Available Right Now...!</p>
+        <Button title="Try a Different Meal..!" onClick={refreshFood} />
+      </div>
+    );
+  }
+  return (
+    <>
+      {allMeals.data.meals.map((meal) => {
+        return <MealCard meal={meal} key={meal.idMeal} />;
+      })}
+    </>
+  );
+};

@@ -4,23 +4,20 @@ import { motion } from "framer-motion";
 import Logo from "../assets/logo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Avatar from "../assets/avatar.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { pages } from "../utils/page-routes";
-import { NavbarBadge, motionAnimate } from "../types/inteface";
+import { NavbarBadge, motionAnimateType } from "../types/inteface";
 import useWindowDimension from "../hooks/useWindowDimension";
 import { WEBSITE_NAME } from "../utils/constants";
 import { useAppSelector } from "../redux/store/store";
+import { motionAnimate } from "../utils/helpers";
 
 const Header = () => {
+  const cartItems = useAppSelector((state) => state.cartItems.carts);
+  const location = useLocation();
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
   const { width } = useWindowDimension();
-
-  const motionAnimate = {
-    initial: { opacity: 0, x: 200 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 200 },
-  };
 
   const navigation = (route: string) => {
     // push to respective pages
@@ -29,7 +26,7 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed z-50 w-screen p-3 px-4 md:p-6 md:px-16 bg-primary">
+    <header className="fixed z-50 w-screen max-w-1600 mx-auto p-3 px-4 md:p-6 md:px-16 bg-primary">
       {/* desktop & tablet */}
       <div className="hidden md:flex w-full h-full items-center justify-between">
         <AppTitle />
@@ -42,6 +39,8 @@ const Header = () => {
               <NavbarWithBadge
                 page={page}
                 key={page.title}
+                cartCount={cartItems.length}
+                activePath={location.pathname}
                 navigation={navigation}
                 className="text-lg text-textColor hover:text-headingColor duration-100 transition-all ease-in-out cursor-pointer"
               />
@@ -79,6 +78,8 @@ const Header = () => {
                   {pages.map((page) => (
                     <NavbarWithBadge
                       page={page}
+                      cartCount={cartItems.length}
+                      activePath={location.pathname}
                       key={page.title}
                       navigation={navigation}
                       className="text-base text-textColor  duration-100 transition-all ease-in-out cursor-pointer hover:bg-slate-200 px-4 py-2"
@@ -100,15 +101,20 @@ const NavbarWithBadge: React.FC<NavbarBadge> = ({
   page,
   navigation,
   className,
+  activePath,
+  cartCount,
 }) => {
-  const cartItems = useAppSelector((state) => state.cartItems.carts);
+  const activeNavbar =
+    page.path === activePath
+      ? `${className} relative before:absolute before:rounded-lg before:content before:min-w-full before:h-1 before:-bottom-2 before:left-0 before:bg-gradient-to-tr from-orange-400 to-orange-600`
+      : className;
 
   // Adding Cart Items Count as Badge Count
   if (page.title === "Cart") {
     return (
-      <Badge count={cartItems.length}>
+      <Badge count={cartCount}>
         <li
-          className={className}
+          className={activeNavbar}
           key={page.title}
           onClick={() => navigation(page.path)}
         >
@@ -119,7 +125,7 @@ const NavbarWithBadge: React.FC<NavbarBadge> = ({
   }
   return (
     <li
-      className={className}
+      className={activeNavbar}
       key={page.title}
       onClick={() => navigation(page.path)}
     >
@@ -137,7 +143,7 @@ const AppTitle = React.memo(() => {
   );
 });
 
-const UserProfile = React.memo(({ motionAnimate }: motionAnimate) => {
+const UserProfile = React.memo(({ motionAnimate }: motionAnimateType) => {
   return (
     <motion.img
       {...motionAnimate}

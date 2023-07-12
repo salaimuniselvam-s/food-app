@@ -37,6 +37,9 @@ export default {
         350: "350px",
         620: "620px",
       },
+      maxWidth: {
+        1600: "1600px",
+      },
       screens: {
         sm: "640px",
         md: "768px",

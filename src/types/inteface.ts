@@ -11,6 +11,8 @@ export interface NavbarBadge {
   page: { title: string; path: string };
   navigation: (route: string) => void;
   className: string;
+  cartCount: number;
+  activePath: string;
 }
 
 export interface Meal {
@@ -69,7 +71,7 @@ export interface Meal {
   dateModified: string | null;
 }
 
-export type motionAnimate = {
+export type motionAnimateType = {
   motionAnimate: {
     initial: { opacity: number; x: number };
     animate: { opacity: number; x: number };

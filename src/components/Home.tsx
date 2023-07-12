@@ -1,6 +1,16 @@
 import Button from "./Button";
+import { useRef } from "react";
 
-const Home = () => {
+const Home: React.FC = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const scrollIntoTopMeal = () => {
+    if (ref.current) {
+      ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
   return (
     <>
       <section className="w-full" id="home">
@@ -32,10 +42,9 @@ const Home = () => {
             Food Delight is committed to bringing joy and satisfaction to your
             dining experiences. Explore, order, and enjoy the convenience of a
             delicious meal delivered right to your doorstep. Start your culinary
-            journey with us today!
+            <span ref={ref}>journey with us today!</span>
           </p>
-
-          <Button title="Order Now" />
+          <Button title="Order Now" onClick={scrollIntoTopMeal} />
         </div>
       </section>
     </>
