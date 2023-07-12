@@ -16,13 +16,13 @@ To start the Food Delight server and run the application, follow these steps:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/food-delight.git
+git clone https://github.com/salaimuniselvam-s/vgts-task.git
 ```
 
 2. Navigate to the project directory:
 
 ```bash
-cd food-delight
+cd vgts-task
 ```
 
 3. Install the dependencies:
