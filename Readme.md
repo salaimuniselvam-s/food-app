@@ -31,7 +31,7 @@ cd food-delight
 yarn
 ```
 
-      or
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or
 
 ```bash
 npm install
@@ -43,13 +43,20 @@ npm install
 yarn dev
 ```
 
-      or
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or
 
 ```bash
 npm run dev
+
 ```
 
 5. Open your browser and visit http://localhost:3000 to access the Food Delight application.
+
+## Preview
+
+Check out the preview of the Food Delight application by following this link: [Food Delight Preview](https://drive.google.com/file/d/1CgboGRrtONVlZKqhvNEGPu9aQHZwHuPF/view?usp=sharing)
+
+This video provides a visual walkthrough of the application, showcasing its features and user interface. Download & Watch the preview to get a glimpse of what Food Delight has to offer.
 
 ## Technologies Used
 

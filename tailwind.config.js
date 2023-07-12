@@ -51,7 +51,7 @@ export default {
         headingColor: "#2e2e2e",
         textColor: "#515151",
         primary: "#f5f3f3",
-        specialPrice: "#47b44c",
+        specialPrice: "#2E8B57",
       },
     },
   },

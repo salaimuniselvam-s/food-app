@@ -33,10 +33,12 @@ const Orders = () => {
         ) : (
           <>
             <div className="flex  flex-col gap-4">
-              {orderedItems.map((item) => {
+              {orderedItems.map((item, index) => {
                 return (
                   <div
-                    className="flex flex-col md:flex-row justify-between  items-center gap-12 pb-2 mb-2 border-b-2"
+                    className={`flex flex-col md:flex-row justify-around items-center gap-4 pb-2 mb-2 ${
+                      orderedItems.length !== index + 1 ? "border-b-2" : ""
+                    }`}
                     key={item.idMeal}
                   >
                     <div className="font-semibold">

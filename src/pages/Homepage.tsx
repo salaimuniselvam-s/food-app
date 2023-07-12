@@ -13,10 +13,12 @@ import {
   addItemsToCart,
   removeItemsFromCart,
 } from "../redux/reducers/cartItems";
+import { motion, useScroll } from "framer-motion";
 
 const { Search } = Input;
 
 const Homepage = () => {
+  const { scrollYProgress } = useScroll();
   const dispatch = useAppDispatch();
   const [searchValue, setSearchValue] = useState("");
   const cartItems = useAppSelector((state) => state.cartItems.carts);
@@ -51,6 +53,10 @@ const Homepage = () => {
 
   return (
     <main>
+      <motion.div
+        className="progress-bar"
+        style={{ scaleX: scrollYProgress }}
+      />
       <Home />
       <section className="w-full my-6 top-10-meals">
         <div className="w-full flex sm:flex-row flex-col sm:gap-0 gap-8 items-center justify-between">

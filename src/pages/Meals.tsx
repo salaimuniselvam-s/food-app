@@ -14,6 +14,7 @@ import {
 } from "../redux/reducers/cartItems";
 import AddressForm from "../components/AddressForm";
 import { filterIngredients } from "../utils/helpers";
+import { LiaShippingFastSolid } from "react-icons/lia";
 
 const Meals = () => {
   const dispatch = useAppDispatch();
@@ -58,7 +59,7 @@ const Meals = () => {
                 <div className="w-full sm:w-1/3 flex-grow">
                   <img
                     src={meal.strMealThumb}
-                    className="object-cover h-full"
+                    className="object-cover rounded-s-md h-full"
                   />
                 </div>
                 <div className="w-full sm:w-2/3 flex flex-col relative p-4">
@@ -121,7 +122,12 @@ const Meals = () => {
       })}
       {/* Add Address & Checkout Modal */}
       <Modal
-        title="Shipping Address"
+        title={
+          <span className="inline-flex items-center gap-2">
+            <LiaShippingFastSolid className="inlne-flex text-lg" />{" "}
+            <span>Shipping Address</span>
+          </span>
+        }
         open={isModalOpen}
         footer={null}
         onOk={handleOk}

@@ -1,11 +1,13 @@
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Homepage from "./pages/Homepage";
-import Cart from "./pages/Cart";
-import Meals from "./pages/Meals";
-import Orders from "./pages/Orders";
 import { AnimatePresence } from "framer-motion";
 import Header from "./components/Header";
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
+import Loader from "./components/Loader";
+
+const Cart = lazy(() => import("./pages/Cart"));
+const Orders = lazy(() => import("./pages/Orders"));
+const Meals = lazy(() => import("./pages/Meals"));
 
 function App() {
   const navigate = useNavigate();
@@ -21,12 +23,14 @@ function App() {
       <div className="w-screen max-w-1600 mx-auto min-h-screen flex flex-col bg-primary">
         <Header />
         <main className="mt-14  md:mt-20 px-4 md:px-16 py-4 w-full">
-          <Routes>
-            <Route path="/*" element={<Homepage />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/meals/:meal" element={<Meals />} />
-          </Routes>
+          <Suspense fallback={<Loader />}>
+            <Routes>
+              <Route path="/*" element={<Homepage />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/orders" element={<Orders />} />
+              <Route path="/meals/:meal" element={<Meals />} />
+            </Routes>
+          </Suspense>
         </main>
       </div>
     </AnimatePresence>
